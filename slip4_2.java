@@ -8,10 +8,16 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+class InvalidUsernamePassException extends Exception {
+	InvalidUsernamePassException(){
+		System.out.println("Invalid username password");
+	}
+}
+
 public class slip4_2 extends JFrame implements ActionListener {
 
-    static String username = "AtharvK";
-    static String password = "password";
+    static String username = "a";
+    static String password = "p";
     static int attempt = 0;
 
     JLabel l1, l2, l3;
@@ -54,12 +60,20 @@ public class slip4_2 extends JFrame implements ActionListener {
         }
 
         if (e.getActionCommand() == "Sign in") {
-            if (f1.getText() == username && f2.getText() == password) {
-                l3.setText("Signed in successfully");
-            } else {
-                attempt++;
-                l3.setText("Incorrect attempt " + attempt);
-            }
+        	try {
+		    	if (f1.getText() == username && f2.getText() == password) {
+		            l3.setText("Signed in successfully");
+		        } else {
+		        	throw new InvalidUsernamePassException();
+		        }	
+        	} catch(InvalidUsernamePassException iue){
+        		attempt++;
+                if (attempt > 3) {
+					l3.setText("Incorrect attempt " + attempt + "\nMore than 3 attempts occurred!");
+				} else {
+					l3.setText("Incorrect attempt " + attempt);
+				}
+        	}
         }
     }
 
